@@ -67,7 +67,7 @@ Installer.prototype.unpack = function(response, done) {
             entry.getData(writer, function(buffer) {
                 self.dialog.setCaption('Extracting lha resources...');
                 var lha = new Lh4.LhaReader(new Lh4.LhaArrayReader(buffer));
-                var data = lha.extract('id1\\pak0.pak'); //maybe change to cap ID1
+                var data = lha.extract('ID1\\PAK0.PAK'); //maybe change to cap ID1
                 self.finalize(data, done);
             });
         });
