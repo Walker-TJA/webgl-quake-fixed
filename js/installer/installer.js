@@ -11,7 +11,7 @@ var Installer = function() {
 Installer.localUrl = 'data/pak0.pak'; //''data/quake106.zip';
 Installer.crossOriginProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 Installer.mirrors = [ // TODO: Add more valid quake shareware mirrors.
-    'https://www.quaddicted.com/files/idgames/idstuff/quake/quake106.zip',
+    'https://ia800206.us.archive.org/view_archive.php?archive=/26/items/msdos_Quake106_shareware/msdos_Quake106_shareware.zip', //https://www.quaddicted.com/files/idgames/idstuff/quake/quake106.zip
 ];
 
 Installer.prototype.error = function(message) {
@@ -67,7 +67,7 @@ Installer.prototype.unpack = function(response, done) {
             entry.getData(writer, function(buffer) {
                 self.dialog.setCaption('Extracting lha resources...');
                 var lha = new Lh4.LhaReader(new Lh4.LhaArrayReader(buffer));
-                var data = lha.extract('id1\\pak0.pak');
+                var data = lha.extract('id1\\pak0.pak'); //maybe change to cap ID1
                 self.finalize(data, done);
             });
         });
