@@ -8,10 +8,15 @@ var Installer = function() {
     this.isLocal = window.location.hostname.indexOf('localhost') !== -1;
 };
 
-Installer.localUrl = 'data/pak0.pak'; //''data/quake106.zip';
-Installer.crossOriginProxyUrl = 'https://cors-anywhere.herokuapp.com/';
-Installer.mirrors = [ // TODO: Add more valid quake shareware mirrors.
-    'https://ia800206.us.archive.org/view_archive.php?archive=/26/items/msdos_Quake106_shareware/msdos_Quake106_shareware.zip', //https://www.quaddicted.com/files/idgames/idstuff/quake/quake106.zip
+// This localUrl modification is correct for skipping the download when running locally.
+Installer.localUrl = 'data/pak0.pak'; 
+
+// This is no longer needed and can be removed or left empty.
+Installer.crossOriginProxyUrl = ''; 
+
+// Replace the old mirrors with a direct-download link.
+Installer.mirrors = [
+    'https://www.quaddicted.com/files/idgames/idstuff/quake/quake106.zip'
 ];
 
 Installer.prototype.error = function(message) {
@@ -22,7 +27,7 @@ Installer.prototype.download = function(done) {
     this.dialog.setCaption('Downloading shareware version of Quake (quake106.zip)...');
     var url = this.isLocal ?
         Installer.localUrl :
-        Installer.crossOriginProxyUrl + Installer.mirrors[0];
+        Installer.mirrors[0]; // Directly use the mirror URL
     var unpacked = url.indexOf('pak') !== -1;
 
     var xhr = new XMLHttpRequest();
@@ -67,7 +72,8 @@ Installer.prototype.unpack = function(response, done) {
             entry.getData(writer, function(buffer) {
                 self.dialog.setCaption('Extracting lha resources...');
                 var lha = new Lh4.LhaReader(new Lh4.LhaArrayReader(buffer));
-                var data = lha.extract('ID1\\PAK0.PAK'); //maybe change to cap ID1
+                // Use lowercase and forward slashes for better compatibility.
+                var data = lha.extract('id1/pak0.pak'); 
                 self.finalize(data, done);
             });
         });
